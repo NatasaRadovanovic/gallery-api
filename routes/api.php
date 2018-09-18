@@ -32,4 +32,4 @@ Route::group([
 
 });
 
-Route::resource('galleries', 'GalleryController')->middleware('auth:api');
+Route::resource('galleries', 'GalleryController');
