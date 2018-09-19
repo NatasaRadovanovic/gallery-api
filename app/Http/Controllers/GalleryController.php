@@ -14,7 +14,9 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $galleries = Gallery::with('images','user')->get();
+        $galleries = Gallery::with('images','user')
+                                ->orderBy('created_at', 'desc')
+                                ->get();
         
         return $galleries;
     }
@@ -37,7 +39,23 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $gallery = new Gallery();
+        $gallery->name = $request['name'];
+        $gallery->description = $request['description'];
+        $gallery->user_id = Auth()->user()->id;
+        $gallery->save();
+        
+        $images = [];
+        
+        foreach ($request->images as $image) {
+           array_push($images, new Image([
+               'image_url' => $image,
+               'gallery_id' => $gallery->id
+               ]));
+        }
+        $gallery->images()->saveMany($images);
+    }
+
     }
 
     /**
@@ -48,14 +66,17 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        $gallery = Gallery::with('images', 'user', 'comments')->findOrFail($id);
+        $gallery = Gallery::with('images', 'user', 'comments')
+                            ->findOrFail($id);
 
         return $gallery;
     }
 
     public function showAuthorsGalleries($id)
     {
-        $galleries = Gallery::with('images','user')->where('user_id', $id)->get();
+        $galleries = Gallery::with('images','user')
+                                ->where('user_id', $id)
+                                ->get();
 
         return $galleries;
     }
