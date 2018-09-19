@@ -48,7 +48,7 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        $gallery = Gallery::with('images', 'user','comments')->findOrFail($id);
+        $gallery = Gallery::with('images', 'user', 'comments')->findOrFail($id);
 
         return $gallery;
     }
