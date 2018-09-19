@@ -15,6 +15,7 @@ class GalleryController extends Controller
     public function index()
     {
         $galleries = Gallery::with('images','user')->get();
+        
         return $galleries;
     }
 
@@ -47,8 +48,11 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        //
+        $gallery = Gallery::with('images', 'user','comments')->findOrFail($id);
+
+        return $gallery;
     }
+
 
     /**
      * Show the form for editing the specified resource.
