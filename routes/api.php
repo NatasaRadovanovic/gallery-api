@@ -29,7 +29,9 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
     Route::post('register', 'AuthController@register');
+    
+    
 
 });
-
+Route::get('authors/{id}', 'GalleryController@showAuthorsGalleries');
 Route::resource('galleries', 'GalleryController');

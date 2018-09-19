@@ -53,7 +53,12 @@ class GalleryController extends Controller
         return $gallery;
     }
 
+    public function showAuthorsGalleries($id)
+    {
+        $galleries = Gallery::with('images','user')->where('user_id', $id)->get();
 
+        return $galleries;
+    }
     /**
      * Show the form for editing the specified resource.
      *
