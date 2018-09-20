@@ -63,7 +63,7 @@ class GalleryController extends Controller
     {
         $galleries = Gallery::with('images','user')
                                 ->where('user_id', $id)
-                                ->get();
+                                ->paginate(10);
 
         return $galleries;
     }
