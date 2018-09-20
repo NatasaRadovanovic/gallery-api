@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Gallery;
+use App\User;
 
 class GalleryController extends Controller
 {
@@ -16,7 +17,7 @@ class GalleryController extends Controller
     {
         $galleries = Gallery::with('images','user')
                                 ->orderBy('created_at', 'desc')
-                                ->get();
+                                ->paginate(10);
         
         return $galleries;
     }
@@ -39,24 +40,10 @@ class GalleryController extends Controller
      */
     public function store(Request $request)
     {
-        $gallery = new Gallery();
-        $gallery->name = $request['name'];
-        $gallery->description = $request['description'];
-        $gallery->user_id = Auth()->user()->id;
-        $gallery->save();
-        
-        $images = [];
-        
-        foreach ($request->images as $image) {
-           array_push($images, new Image([
-               'image_url' => $image,
-               'gallery_id' => $gallery->id
-               ]));
-        }
-        $gallery->images()->saveMany($images);
+      
     }
 
-    }
+    
 
     /**
      * Display the specified resource.
@@ -79,6 +66,11 @@ class GalleryController extends Controller
                                 ->get();
 
         return $galleries;
+    }
+
+    public function showOwnersGalleries()
+    {
+        
     }
     /**
      * Show the form for editing the specified resource.

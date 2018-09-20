@@ -34,4 +34,5 @@ Route::group([
 
 });
 Route::get('authors/{id}', 'GalleryController@showAuthorsGalleries');
+Route::get('my-galleries', 'GalleryController@showOwnersGalleries');
 Route::resource('galleries', 'GalleryController');
