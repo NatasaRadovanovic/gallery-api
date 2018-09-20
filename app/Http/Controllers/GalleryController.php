@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Gallery;
 use App\User;
+use App\Image;
+use App\Http\Requests\GalleryRequest;
 
 class GalleryController extends Controller
 {
@@ -38,9 +40,22 @@ class GalleryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GalleryRequest $request)
     {
-      
+        $gallery = new Gallery();
+        $gallery->name = $request['name'];
+        $gallery->description = $request['description'];
+        $gallery->user_id = Auth()->user()->id;
+        $gallery->save();
+        $images = [];
+        
+        foreach ($request->images as $image) {
+           array_push($images, new Image([
+               'url' => $image,
+               'gallery_id' => $gallery->id
+               ]));
+        }
+        $gallery->images()->saveMany($images);
     }
 
     
