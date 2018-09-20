@@ -70,7 +70,11 @@ class GalleryController extends Controller
 
     public function showOwnersGalleries()
     {
-        
+        $user =  User::where('id', auth()->user()->id)
+                    ->with('galleries.images')
+                    ->first();
+
+        return $user;            
     }
     /**
      * Show the form for editing the specified resource.
