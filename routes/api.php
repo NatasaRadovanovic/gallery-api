@@ -33,6 +33,10 @@ Route::group([
     
 
 });
+
+
+Route::resource('galleries', 'GalleryController');
+Route::resource('comments', 'CommentController');
 Route::get('authors/{id}', 'GalleryController@showAuthorsGalleries');
 Route::get('my-galleries', 'GalleryController@showOwnersGalleries');
-Route::resource('galleries', 'GalleryController');
+

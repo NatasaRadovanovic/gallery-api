@@ -8,10 +8,6 @@ use App\Comment;
 
 class CommentController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', ['only' => 'store']);
-    }
     /**
      * Display a listing of the resource.
      *
@@ -29,7 +25,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        
+        //
     }
 
     /**
@@ -40,14 +36,14 @@ class CommentController extends Controller
      */
     public function store(CommentRequest $request)
     {
+        $user = auth()->user();
+        
         return Comment::create([
-            'body' => $request['body'],
-            'gallery_id' => $request['gallery_id'],
-            'user_id' => auth()->user()->id
+            'body' => $request->body,
+            'gallery_id' => $request->gallery_id,
+            'user_id' => $user->id,
         ]);
-
-       
-    }
+ }
 
     /**
      * Display the specified resource.
@@ -91,6 +87,7 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+       Comment::destroy($id);
+       return response()->json(['message' => 'comment deleted successfully']);
     }
 }
