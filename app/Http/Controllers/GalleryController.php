@@ -68,7 +68,7 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        $gallery = Gallery::with('images', 'user', 'comments')
+        $gallery = Gallery::with('images', 'user','comments.user')
                             ->findOrFail($id);
 
         return $gallery;
@@ -85,11 +85,13 @@ class GalleryController extends Controller
 
     public function showOwnersGalleries()
     {
-        $user =  User::where('id', auth()->user()->id)
-                    ->with('galleries.images')
-                    ->first();
+        $user_id = auth()->user()->id;
+        
+        $galleries = Gallery::with('images','user')
+        ->where('user_id',  $user_id)
+        ->paginate(10);
 
-        return $user;            
+        return $galleries;  
     }
     /**
      * Show the form for editing the specified resource.
