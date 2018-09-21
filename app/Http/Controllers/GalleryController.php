@@ -17,8 +17,8 @@ class GalleryController extends Controller
      */
     public function index()
     {
-        $galleries = Gallery::with('images','user')
-                                ->orderBy('created_at', 'desc')
+        $galleries = Gallery::orderBy('created_at', 'desc')
+                                ->with('images','user')
                                 ->paginate(10);
         
         return $galleries;
@@ -75,8 +75,9 @@ class GalleryController extends Controller
     }
 
     public function showAuthorsGalleries($id)
-    {
-        $galleries = Gallery::with('images','user')
+    {   
+        $galleries = Gallery::orderBy('created_at', 'desc')
+                                ->with('images','user')
                                 ->where('user_id', $id)
                                 ->paginate(10);
 
@@ -89,6 +90,7 @@ class GalleryController extends Controller
         
         $galleries = Gallery::with('images','user')
         ->where('user_id',  $user_id)
+        ->orderBy('created_at', 'desc')
         ->paginate(10);
 
         return $galleries;  
