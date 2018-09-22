@@ -89,9 +89,9 @@ class GalleryController extends Controller
         $user_id = auth()->user()->id;
         
         $galleries = Gallery::with('images','user')
-        ->where('user_id',  $user_id)
-        ->orderBy('created_at', 'desc')
-        ->paginate(10);
+                            ->where('user_id',  $user_id)
+                            ->orderBy('created_at', 'desc')
+                            ->paginate(10);
 
         return $galleries;  
     }
@@ -113,9 +113,12 @@ class GalleryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(GalleryRequest $request, $id)
     {
-        //
+        $gallery = Gallery::findOrFail($id);
+        $gallery->update($request->all()); 
+        
+        return $gallery;
     }
 
     /**
