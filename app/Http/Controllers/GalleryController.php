@@ -116,9 +116,19 @@ class GalleryController extends Controller
     public function update(GalleryRequest $request, $id)
     {
         $gallery = Gallery::findOrFail($id);
-        $gallery->update($request->all()); 
+        $gallery->images()->delete();
+        $gallery->update($request->all());
+        $images = [];
         
-        return $gallery;
+        foreach ($request->images as $image) {
+            array_push($images, new Image([
+                'url' => $image,
+                'gallery_id' => $gallery->id
+                ]));
+         }
+          $gallery->images()->saveMany($images);
+          return $gallery;
+         
     }
 
     /**
